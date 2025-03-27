@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Estimation</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        document.getElementById("lat").value = position.coords.latitude;
+                        document.getElementById("lng").value = position.coords.longitude;
+                    },
+                    function (error) {
+                        alert("Location access denied! Please enable location services.");
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>   
+</head>
+<body onload="getLocation()">
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-leaf"></i> Crop Estimation</h1>
+            <nav>
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html"><i class="fas fa-cloud-sun-rain"></i> Weather Dashboard</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="form-container">
+                <h2><i class="fas fa-clipboard-list"></i> Enter Crop Data</h2>
+                <form action="estimates.php" method="POST">
+                    <div class="form-group">
+                        <label for="crop_name"><i class="fas fa-seedling"></i> Crop Name:</label>
+                        <input type="text" id="crop_name" name="crop_name" placeholder="Enter crop name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area"><i class="fas fa-draw-polygon"></i> Area (in acres):</label>
+                        <input type="number" id="area" name="area" step="0.01" min="0.01" placeholder="Enter area size" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="yield"><i class="fas fa-chart-line"></i> Expected Yield per Acre (in tons):</label>
+                        <input type="number" id="yield" name="yield" step="0.01" min="0.01" placeholder="Enter expected yield" required>
+                    </div>
+
+                    <!-- Hidden fields for location -->
+                    <input type="hidden" id="lat" name="lat">
+                    <input type="hidden" id="lng" name="lng">  
+
+                    <button type="submit" class="btn primary-btn"><i class="fas fa-calculator"></i> Calculate Estimate</button>
+                </form>
+            </section>
+
+            <section class="result-container">
+                <h2><i class="fas fa-chart-bar"></i> Estimation Result</h2>
+                <p>Submit the form to see your crop estimation results.</p>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Theme Toggle JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check for saved theme preference or use device preference
+            const savedTheme = localStorage.getItem('theme') || 
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            
+            // Apply saved theme
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateIcon(savedTheme);
+            
+            // Toggle theme
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+            });
+            
+            // Update icon based on theme
+            function updateIcon(theme) {
+                if (theme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
