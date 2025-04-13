@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Crop Monitoring System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // Apply saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Update theme toggle button icon
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                const icon = themeToggle.querySelector('i');
+                if (icon) {
+                    if (savedTheme === 'dark') {
+                        icon.classList.remove('fa-sun');
+                        icon.classList.add('fa-moon');
+                    } else {
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                    }
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1><i class="fas fa-seedling"></i> Crop Monitoring System</h1>
+            <nav>
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html"><i class="fas fa-map-marker-alt"></i> Weather Dashboard</a>
+                <a href="main.html"><i class="fas fa-calculator"></i> Crop Estimation</a>
+                <a href="crop_planner/index.html"><i class="fas fa-sync-alt"></i> Crop Rotation</a>
+                <a href="profile.html" class="active"><i class="fas fa-user-circle"></i> Profile</a>
+            </nav>
+            <div class="user-profile-icon">
+                <a href="profile.html" title="View Profile">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                        <img id="header-profile-img" src="" alt="Profile" style="display: none;">
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="profile-content">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-picture">
+                    <span id="profile-initial">?</span>
+                    <img id="profile-img" src="" alt="Profile Picture">
+                    <label class="profile-picture-upload">
+                        <i class="fas fa-camera"></i>
+                        <input type="file" id="profile-picture-input" accept="image/*">
+                    </label>
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-name" id="display-name">John Doe</h1>
+                    <p class="profile-email" id="display-email">johndoe@example.com</p>
+                    <span class="user-type" id="user-type">Farmer</span>
+                </div>
+            </div>
+
+            <!-- Profile Tabs -->
+            <div class="profile-tabs">
+                <div class="profile-tab active" data-tab="profile"><i class="fas fa-user"></i> Profile Information</div>
+                <div class="profile-tab" data-tab="activity"><i class="fas fa-chart-line"></i> Activity</div>
+                <div class="profile-tab" data-tab="security"><i class="fas fa-shield-alt"></i> Security</div>
+                <div class="profile-tab" data-tab="settings"><i class="fas fa-cog"></i> Settings</div>
+            </div>
+
+            <!-- Profile Tab Content -->
+            <div id="profile-tab" class="profile-tab-content active">
+                <form id="profile-form" class="profile-form">
+                    <div class="form-group full-width">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" id="name" class="form-control" disabled>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" disabled>
+                    </div>
+                    <div id="form-actions" class="form-actions">
+                        <button type="button" id="cancel-edit" class="btn secondary-btn">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn primary-btn">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </div>
+                </form>
+                <button id="edit-profile" class="btn primary-btn">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+            </div>
+
+            <!-- Activity Tab Content -->
+            <div id="activity-tab" class="profile-tab-content">
+                <h2>Recent Activity</h2>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Reported a pest sighting</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-spray-can"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Updated treatment information</div>
+                            <div class="activity-time">Yesterday</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Added a new location</div>
+                            <div class="activity-time">3 days ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Updated crop information</div>
+                            <div class="activity-time">1 week ago</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Security Tab Content -->
+            <div id="security-tab" class="profile-tab-content">
+                <h2>Account Security</h2>
+                <div class="settings-section">
+                    <h3 class="settings-header">Change Password</h3>
+                    <form id="change-password-form" class="profile-form">
+                        <div class="form-group full-width">
+                            <label for="current-password" class="form-label">Current Password</label>
+                            <input type="password" id="current-password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password" class="form-label">New Password</label>
+                            <input type="password" id="new-password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password" class="form-label">Confirm New Password</label>
+                            <input type="password" id="confirm-password" class="form-control">
+                        </div>
+                        <div class="form-actions" style="display: flex;">
+                            <button type="submit" class="btn primary-btn" id="change-password-btn">
+                                <i class="fas fa-key"></i> Update Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="settings-section">
+                    <h3 class="settings-header">Account Deletion</h3>
+                    <p>Once you delete your account, there is no going back. Please be certain.</p>
+                    <button id="delete-account-btn" class="btn warning-btn">
+                        <i class="fas fa-trash"></i> Delete Account
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settings Tab Content -->
+            <div id="settings-tab" class="profile-tab-content">
+                <h2>Application Settings</h2>
+                <div class="settings-section">
+                    <h3 class="settings-header">Appearance</h3>
+                    <div class="notification-setting">
+                        <div>
+                            <div class="notification-label">Dark Mode</div>
+                            <div class="notification-description">Switch between light and dark theme</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="dark-mode-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3 class="settings-header">Notifications</h3>
+                    <div class="notification-setting">
+                        <div>
+                            <div class="notification-label">Pest Alerts</div>
+                            <div class="notification-description">Receive alerts about new pest reports in your area</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="pest-alerts" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="notification-setting">
+                        <div>
+                            <div class="notification-label">Treatment Reminders</div>
+                            <div class="notification-description">Get reminders about scheduled treatments</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="treatment-reminders" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="notification-setting">
+                        <div>
+                            <div class="notification-label">Weather Alerts</div>
+                            <div class="notification-description">Receive alerts about weather conditions that might affect pest activity</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="weather-alerts">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3 class="settings-header">Data Management</h3>
+                    <div class="form-group">
+                        <button id="export-data" class="btn secondary-btn">
+                            <i class="fas fa-download"></i> Export Your Data
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <button id="clear-data" class="btn warning-btn">
+                            <i class="fas fa-eraser"></i> Clear All App Data
+                        </button>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3 class="settings-header">Account</h3>
+                    <div class="form-group">
+                        <button id="logout-btn" class="btn warning-btn logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Delete Account Modal -->
+        <div id="delete-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Delete Account</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>This action cannot be undone. This will permanently delete your account and all associated data.</p>
+                    <p>Please type <strong>DELETE</strong> to confirm:</p>
+                    <input type="text" class="form-control" id="delete-confirm" placeholder="Type DELETE to confirm">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn secondary-btn" id="cancel-delete">Cancel</button>
+                    <button class="btn warning-btn" id="confirm-delete">Delete Account</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container"></div>
+    </div>
+
+    <!-- Floating AI Chatbot -->
+    <div class="ai-chatbot-floating" id="ai-chatbot-floating">
+        <div class="chatbot-wrapper" id="chatbot-wrapper">
+            <div class="chatbot-header">
+                <h3><i class="fas fa-robot"></i> AI Farming Assistant</h3>
+                <button class="chatbot-close" id="chatbot-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div class="bot-message">
+                    Hello! I'm your AI Farming Assistant. How can I help you today?
+                </div>
+                <div class="bot-message">
+                    You can ask me about crops, pest management, weather impacts, or any farming topic.
+                </div>
+            </div>
+            <div class="chatbot-quick-replies">
+                <button class="quick-reply" data-query="How to manage aphids?">How to manage aphids?</button>
+                <button class="quick-reply" data-query="Best crops for clay soil?">Best crops for clay soil?</button>
+                <button class="quick-reply" data-query="Organic fertilizers?">Organic fertilizers?</button>
+            </div>
+            <div class="chatbot-input-container">
+                <input type="text" id="chatbot-input" placeholder="Ask something...">
+                <button id="chatbot-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button class="chatbot-toggle" id="chatbot-toggle">
+            <i class="fas fa-robot"></i>
+        </button>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="profile.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html> 

@@ -1,0 +1,597 @@
+/* Pest & Disease Tracker Styles */
+
+:root {
+    --primary-color: #2ecc71;
+    --primary-dark: #27ae60;
+    --accent-color: #f39c12;
+    --danger-color: #e74c3c;
+    --info-color: #3498db;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --gray-color: #95a5a6;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Base Styles */
+.pest-tracker-container {
+    font-family: 'Roboto', Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color: var(--dark-color);
+}
+
+.pest-tracker-container h1 {
+    color: var(--primary-dark);
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.pest-tracker-container h2 {
+    color: var(--dark-color);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.pest-tracker-container h3 {
+    color: var(--dark-color);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.no-data-message {
+    text-align: center;
+    padding: 30px;
+    color: var(--gray-color);
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+    margin: 20px 0;
+}
+
+/* Layout */
+.tracker-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+@media (min-width: 992px) {
+    .tracker-layout {
+        grid-template-columns: 350px 1fr;
+    }
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn i {
+    font-size: 16px;
+}
+
+.btn-sm {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.secondary-btn {
+    background-color: var(--info-color);
+}
+
+.secondary-btn:hover {
+    background-color: #2980b9;
+}
+
+.accent-btn {
+    background-color: var(--accent-color);
+}
+
+.accent-btn:hover {
+    background-color: #d35400;
+}
+
+.warning-btn {
+    background-color: var(--danger-color);
+}
+
+.warning-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Cards */
+.card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.card-header {
+    padding: 15px;
+    background-color: var(--light-color);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* Tabs Navigation */
+.tab-navigation {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--gray-color);
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.tab-btn:hover {
+    color: var(--primary-color);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Report Form */
+.report-form-section {
+    margin-bottom: 25px;
+}
+
+#location-wrapper {
+    position: relative;
+}
+
+#use-map-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    color: var(--primary-color);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.location-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.location-inputs input {
+    flex: 1;
+}
+
+/* Image Upload */
+.image-upload-container {
+    margin-top: 15px;
+}
+
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.preview-image {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--border-radius);
+    position: relative;
+}
+
+.remove-image {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+/* Map Modal */
+.map-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.map-modal-content {
+    background-color: white;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.map-modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.map-modal-body {
+    padding: 0;
+}
+
+.map-modal-footer {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+#location-map {
+    height: 60vh;
+    width: 100%;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--gray-color);
+}
+
+.close-modal:hover {
+    color: var(--danger-color);
+}
+
+/* Reports List */
+.search-filter-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-filter-container input,
+.search-filter-container select {
+    height: 40px;
+}
+
+.search-container {
+    flex: 1;
+    position: relative;
+}
+
+.search-container i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-color);
+}
+
+.search-container input {
+    padding-left: 30px;
+}
+
+.filter-container {
+    width: 150px;
+}
+
+.report-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.report-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.report-header {
+    padding: 15px;
+    background-color: var(--light-color);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.report-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.report-meta {
+    display: flex;
+    gap: 10px;
+    color: var(--gray-color);
+    font-size: 12px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.report-content {
+    padding: 15px;
+}
+
+.report-content p {
+    margin-bottom: 10px;
+}
+
+.report-images {
+    display: flex;
+    gap: 10px;
+    padding: 0 15px 15px;
+    overflow-x: auto;
+}
+
+.report-image {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--border-radius);
+    object-fit: cover;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.report-image:hover {
+    transform: scale(1.05);
+}
+
+.report-actions {
+    padding: 10px 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Severity Badges */
+.severity-badge {
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.severity-low {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.severity-medium {
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+}
+
+.severity-high {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+/* Maps and Charts */
+#sightings-map {
+    height: 400px;
+    width: 100%;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+
+.custom-marker {
+    background: none;
+    border: none;
+}
+
+.map-marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.marker-insect {
+    background-color: var(--accent-color);
+}
+
+.marker-disease {
+    background-color: var(--danger-color);
+}
+
+.marker-other {
+    background-color: var(--info-color);
+}
+
+.chart-container {
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+.marker-popup h4 {
+    margin: 0 0 5px 0;
+    color: var(--dark-color);
+}
+
+.marker-popup p {
+    margin: 5px 0;
+    font-size: 13px;
+}
+
+/* Trends and Insights */
+.trends-section {
+    margin-bottom: 25px;
+}
+
+.trend-insights {
+    margin-top: 30px;
+}
+
+.insights-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.insight-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.insight-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.insight-title {
+    padding: 15px;
+    background-color: var(--light-color);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.insight-title i {
+    color: var(--primary-color);
+}
+
+.insight-content {
+    padding: 15px;
+    line-height: 1.6;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .search-filter-container {
+        flex-direction: column;
+    }
+    
+    .filter-container {
+        width: 100%;
+    }
+    
+    .insights-container {
+        grid-template-columns: 1fr;
+    }
+} 

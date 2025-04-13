@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Rotation Planner | Crop Monitoring System</title>
+    <link rel="stylesheet" href="../styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Drag and Drop Library -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="planner.css">
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-sync-alt"></i> Crop Rotation Planner</h1>
+            <nav>
+                <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="../dashboard.html"><i class="fas fa-cloud-sun-rain"></i> Weather Dashboard</a>
+                <a href="../main.html"><i class="fas fa-calculator"></i> Crop Estimation</a>
+            </nav>
+        </header>
+
+        <main class="planner-content">
+            <section class="planner-intro">
+                <h2>Plan Your Crop Rotation</h2>
+                <p>Crop rotation is the practice of growing different types of crops in the same area across seasons. It helps in maintaining soil health, managing pests, and optimizing nutrient use.</p>
+                
+                <div class="planner-benefits">
+                    <div class="benefit-card">
+                        <i class="fas fa-bug"></i>
+                        <h3>Reduce Pests</h3>
+                        <p>Disrupts pest cycles by changing host plants</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Soil Health</h3>
+                        <p>Improves soil structure and fertility</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-tint"></i>
+                        <h3>Water Efficiency</h3>
+                        <p>Different root systems improve water utilization</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Higher Yields</h3>
+                        <p>Can increase crop yields by 10-25%</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="planner-tool">
+                <div class="planner-controls">
+                    <div class="field-info">
+                        <h3>Field Information</h3>
+                        <div class="form-group">
+                            <label for="field-name">Field Name:</label>
+                            <input type="text" id="field-name" placeholder="Enter field name">
+                        </div>
+                        <div class="form-group">
+                            <label for="field-size">Field Size (acres):</label>
+                            <input type="number" id="field-size" placeholder="Size in acres" min="0.1" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="soil-type">Soil Type:</label>
+                            <select id="soil-type">
+                                <option value="clay">Clay</option>
+                                <option value="sandy">Sandy</option>
+                                <option value="loamy" selected>Loamy</option>
+                                <option value="silty">Silty</option>
+                                <option value="peaty">Peaty</option>
+                                <option value="chalky">Chalky</option>
+                            </select>
+                        </div>
+                        <button id="add-field" class="btn primary-btn"><i class="fas fa-plus"></i> Add Field</button>
+                    </div>
+                    
+                    <div class="rotation-plan">
+                        <h3>Rotation Plan</h3>
+                        <div class="rotation-years">
+                            <button class="year-tab active" data-year="1">Year 1</button>
+                            <button class="year-tab" data-year="2">Year 2</button>
+                            <button class="year-tab" data-year="3">Year 3</button>
+                            <button class="year-tab" data-year="4">Year 4</button>
+                            <button id="add-year" class="add-year-btn"><i class="fas fa-plus"></i></button>
+                        </div>
+                        
+                        <div class="season-planner">
+                            <div class="season-header">
+                                <div class="season-label">Spring</div>
+                                <div class="season-label">Summer</div>
+                                <div class="season-label">Fall</div>
+                                <div class="season-label">Winter</div>
+                            </div>
+                            <div class="season-crops" id="year-1-crops">
+                                <div class="season-slot spring-slot" data-season="spring" data-year="1">
+                                    <div class="crop-selector">
+                                        <select class="crop-select">
+                                            <option value="">Select Crop</option>
+                                            <optgroup label="Legumes">
+                                                <option value="peas">Peas</option>
+                                                <option value="beans">Beans</option>
+                                                <option value="lentils">Lentils</option>
+                                            </optgroup>
+                                            <optgroup label="Root Vegetables">
+                                                <option value="potatoes">Potatoes</option>
+                                                <option value="carrots">Carrots</option>
+                                                <option value="beets">Beets</option>
+                                            </optgroup>
+                                            <optgroup label="Leafy Greens">
+                                                <option value="lettuce">Lettuce</option>
+                                                <option value="spinach">Spinach</option>
+                                                <option value="kale">Kale</option>
+                                            </optgroup>
+                                            <optgroup label="Grains">
+                                                <option value="wheat">Wheat</option>
+                                                <option value="corn">Corn</option>
+                                                <option value="rice">Rice</option>
+                                            </optgroup>
+                                            <optgroup label="Fruits">
+                                                <option value="tomatoes">Tomatoes</option>
+                                                <option value="peppers">Peppers</option>
+                                                <option value="strawberries">Strawberries</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="season-slot summer-slot" data-season="summer" data-year="1">
+                                    <div class="crop-selector">
+                                        <select class="crop-select">
+                                            <option value="">Select Crop</option>
+                                            <!-- Same options as above -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="season-slot fall-slot" data-season="fall" data-year="1">
+                                    <div class="crop-selector">
+                                        <select class="crop-select">
+                                            <option value="">Select Crop</option>
+                                            <!-- Same options as above -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="season-slot winter-slot" data-season="winter" data-year="1">
+                                    <div class="crop-selector">
+                                        <select class="crop-select">
+                                            <option value="">Select Crop</option>
+                                            <!-- Same options as above -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Year 2-4 will be dynamically added via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="planner-recommendations">
+                    <h3>Recommendations</h3>
+                    <div class="recommendation-content">
+                        <p class="recommendation-placeholder">Select crops in your rotation plan to see recommendations.</p>
+                        <div id="recommendation-details" style="display: none;">
+                            <div class="compatibility-score">
+                                <h4>Rotation Compatibility</h4>
+                                <div class="score-meter">
+                                    <div class="score-fill" style="width: 75%;"></div>
+                                </div>
+                                <span class="score-value">75%</span>
+                            </div>
+                            <div class="recommendation-list">
+                                <h4>Suggestions</h4>
+                                <ul id="suggestions-list">
+                                    <!-- Will be populated by JavaScript -->
+                                </ul>
+                            </div>
+                            <div class="nutrient-analysis">
+                                <h4>Nutrient Balance</h4>
+                                <canvas id="nutrientChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="action-buttons">
+                <button id="save-plan" class="btn primary-btn"><i class="fas fa-save"></i> Save Plan</button>
+                <button id="print-plan" class="btn secondary-btn"><i class="fas fa-print"></i> Print Plan</button>
+                <button id="export-plan" class="btn accent-btn"><i class="fas fa-file-export"></i> Export as PDF</button>
+                <button id="clear-plan" class="btn warning-btn"><i class="fas fa-trash"></i> Clear Plan</button>
+            </section>
+            
+            <section class="saved-plans">
+                <h3>Saved Plans</h3>
+                <div id="plans-container" class="plans-container">
+                    <p class="no-plans-message">You haven't saved any plans yet.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="planner.js"></script>
+    <!-- Theme Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check for saved theme preference or use device preference
+            const savedTheme = localStorage.getItem('theme') || 
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            
+            // Apply saved theme
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateIcon(savedTheme);
+            
+            // Toggle theme
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+            });
+            
+            // Update icon based on theme
+            function updateIcon(theme) {
+                if (theme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

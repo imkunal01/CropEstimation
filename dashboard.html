@@ -17,6 +17,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
+    <!-- Chart.js for weather charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Theme Toggle Button -->
@@ -26,11 +28,23 @@
     
     <div class="container">
         <header>
-            <h1><i class="fas fa-cloud-sun-rain"></i> Crop Location & Weather Dashboard</h1>
+            <h1><i class="fas fa-seedling"></i> Crop Monitoring System</h1>
             <nav>
                 <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html" class="active"><i class="fas fa-cloud-sun-rain"></i> Weather Dashboard</a>
                 <a href="main.html"><i class="fas fa-calculator"></i> Crop Estimation</a>
+                <a href="pest_tracker/index.html"><i class="fas fa-bug"></i> Pest Tracker</a>
+                <a href="crop_planner/index.html"><i class="fas fa-sync-alt"></i> Crop Rotation</a>
+                <a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a>
             </nav>
+            <div class="user-profile-icon">
+                <a href="profile.html" title="View Profile">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                        <img id="header-profile-img" src="" alt="Profile" style="display: none;">
+                    </div>
+                </a>
+            </div>
         </header>
         
         <main class="dashboard">
@@ -51,14 +65,246 @@
                     <div id="weather-data">
                         <p class="placeholder-text">Select a location on the map to view weather data</p>
                     </div>
+                    
+                    <!-- Weather forecast section (will be populated by JS) -->
+                    <div id="weather-forecast" style="display: none;">
+                        <h3><i class="fas fa-calendar-day"></i> 5-Day Forecast</h3>
+                        <div class="forecast-container"></div>
+                    </div>
+                    
+                    <!-- Weather charts section (will be populated by JS) -->
+                    <div id="weather-charts" style="display: none;">
+                        <div class="section-divider"></div>
+                        <h3><i class="fas fa-chart-line"></i> Weather Trends</h3>
+                        <div class="chart-container">
+                            <canvas id="temperatureChart"></canvas>
+                        </div>
+                    </div>
                 </section>
             </div>
+            
+            <!-- Crop Recommendations Section -->
+            <div class="section-divider"></div>
+            <section id="crop-recommendations" style="display: none;">
+                <h2><i class="fas fa-seedling accent-green"></i> Crop Recommendations</h2>
+                <div class="info-grid">
+                    <!-- This will be populated by JavaScript based on weather conditions -->
+                </div>
+            </section>
+            
+            <!-- Weather Information Section -->
+            <div class="section-divider"></div>
+            <section class="info-container">
+                <h2><i class="fas fa-info-circle accent-blue"></i> Weather Interpretation Guide</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-thermometer-half accent-red"></i> Temperature</h3>
+                        <ul>
+                            <li><strong>Below 10°C:</strong> Cold stress for most crops. Protect sensitive plants.</li>
+                            <li><strong>10-20°C:</strong> Ideal for cool-season crops (lettuce, spinach, peas).</li>
+                            <li><strong>20-30°C:</strong> Optimal for most crops. Good growing conditions.</li>
+                            <li><strong>Above 30°C:</strong> Heat stress possible. Increase watering and provide shade.</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <h3><i class="fas fa-tint accent-blue"></i> Humidity</h3>
+                        <ul>
+                            <li><strong>Below 30%:</strong> Low humidity. Incre ased water needs.</li>
+                            <li><strong>30-60%:</strong> Moderate humidity. Optimal for most crops.</li>
+                            <li><strong>Above 60%:</strong> High humidity. Monitor for fungal diseases.</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <h3><i class="fas fa-wind accent-blue"></i> Wind Speed</h3>
+                        <ul>
+                            <li><strong>Below 5 m/s:</strong> Light wind. Generally beneficial for pollination.</li>
+                            <li><strong>5-10 m/s:</strong> Moderate wind. May cause mechanical stress.</li>
+                            <li><strong>Above 10 m/s:</strong> Strong wind. Potential for crop damage, consider windbreaks.</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <h3><i class="fas fa-cloud-rain accent-blue"></i> Rainfall</h3>
+                        <ul>
+                            <li><strong>Light Rain:</strong> Beneficial for most crops.</li>
+                            <li><strong>Heavy Rain:</strong> Risk of waterlogging and disease. Check drainage.</li>
+                            <li><strong>No Rain:</strong> Monitor soil moisture and consider irrigation.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Community Chat Section -->
+            <section class="section-container">
+                <div class="section-header">
+                    <h2><i class="fas fa-users text-accent-purple"></i> Farming Community Chat</h2>
+                    <p>Connect with other farmers, share knowledge, and learn from expert advisors</p>
+                </div>
+                
+                <div class="community-chat">
+                    <div class="community-chat-header">
+                        <h3><i class="fas fa-comments"></i> Community Forums</h3>
+                        <div>
+                            <button class="btn btn-sm primary-btn" id="new-topic-btn">
+                                <i class="fas fa-plus"></i> New Topic
+                            </button>
+                            <button class="btn btn-sm btn-light login-link" id="chat-login-btn">
+                                <i class="fas fa-user-circle"></i> Sign In to Participate
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="community-chat-tabs">
+                        <div class="community-tab active" data-chat-tab="general">General Discussion</div>
+                        <div class="community-tab" data-chat-tab="cropcare">Crop Care</div>
+                        <div class="community-tab" data-chat-tab="equipment">Equipment</div>
+                        <div class="community-tab" data-chat-tab="marketplace">Marketplace</div>
+                        <div class="community-tab" data-chat-tab="weather">Weather & Climate</div>
+                        <div class="community-tab" data-chat-tab="help">Help & Support</div>
+                    </div>
+                    
+                    <div class="community-chat-content">
+                        <div class="chat-sidebar">
+                            <ul class="chat-list">
+                                <li class="chat-list-item active" data-topic="welcome">
+                                    <div class="chat-topic">
+                                        <div class="chat-topic-title">Welcome to the Community</div>
+                                        <div class="chat-topic-meta">Pinned • 45 replies</div>
+                                    </div>
+                                </li>
+                                <li class="chat-list-item chat-item-unread" data-topic="pest-control">
+                                    <div class="chat-topic">
+                                        <div class="chat-topic-title">Organic Pest Control Methods</div>
+                                        <div class="chat-topic-meta">28 replies • 3 days ago</div>
+                                    </div>
+                                </li>
+                                <li class="chat-list-item" data-topic="drought">
+                                    <div class="chat-topic">
+                                        <div class="chat-topic-title">Dealing with Drought Conditions</div>
+                                        <div class="chat-topic-meta">17 replies • 1 week ago</div>
+                                    </div>
+                                </li>
+                                <li class="chat-list-item" data-topic="soil">
+                                    <div class="chat-topic">
+                                        <div class="chat-topic-title">Soil Health Improvement</div>
+                                        <div class="chat-topic-meta">32 replies • 2 weeks ago</div>
+                                    </div>
+                                </li>
+                                <li class="chat-list-item" data-topic="planning">
+                                    <div class="chat-topic">
+                                        <div class="chat-topic-title">New Season Planning</div>
+                                        <div class="chat-topic-meta">12 replies • 3 weeks ago</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="chat-main">
+                            <div class="chat-messages-container" id="chat-messages-container">
+                                <!-- Welcome Topic Messages -->
+                                <div class="chat-message" data-message-topic="welcome">
+                                    <div class="message-avatar" style="background-color: #4caf50;">JD</div>
+                                    <div class="message-content">
+                                        <div class="message-author">
+                                            John Doe <span class="author-tag">Admin</span>
+                                        </div>
+                                        <div class="message-text">
+                                            Welcome to our farming community! This is a place to share knowledge, ask questions, and connect with other farmers. Please be respectful and helpful to create a positive environment for everyone.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="chat-message" data-message-topic="welcome">
+                                    <div class="message-avatar" style="background-color: #ff9800;">MS</div>
+                                    <div class="message-content">
+                                        <div class="message-author">
+                                            Maria Smith <span class="author-tag expert">Expert</span>
+                                        </div>
+                                        <div class="message-text">
+                                            Hello everyone! I'm an agricultural specialist focusing on sustainable farming practices. Feel free to tag me if you have questions about organic methods or soil conservation.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="chat-message" data-message-topic="welcome">
+                                    <div class="message-avatar" style="background-color: #2196f3;">RJ</div>
+                                    <div class="message-content">
+                                        <div class="message-author">
+                                            Robert Johnson
+                                        </div>
+                                        <div class="message-text">
+                                            Hi all! I'm new to farming and just starting with a small plot. Looking forward to learning from everyone here. My first crop will be tomatoes - any advice for beginners?
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="chat-message" data-message-topic="welcome">
+                                    <div class="message-avatar" style="background-color: #9c27b0;">LW</div>
+                                    <div class="message-content">
+                                        <div class="message-author">
+                                            Lisa Wang
+                                        </div>
+                                        <div class="message-text">
+                                            @Robert - Welcome! For tomatoes, make sure they get at least 6 hours of sunlight daily. Start with cherry tomatoes as they're more forgiving for beginners. Keep the soil consistently moist but not waterlogged, and use a cage or stake for support as they grow.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pest Control Topic Messages (initially hidden) -->
+                                <div class="chat-message" data-message-topic="pest-control" style="display: none;">
+                                    <div class="message-avatar" style="background-color: #ff9800;">MS</div>
+                                    <div class="message-content">
+                                        <div class="message-author">
+                                            Maria Smith <span class="author-tag expert">Expert</span>
+                                        </div>
+                                        <div class="message-text">
+                                            Let's discuss organic pest control methods that don't harm beneficial insects. I've had great success with companion planting and introducing natural predators.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="chat-message" data-message-topic="pest-control" style="display: none;">
+                                    <div class="message-avatar" style="background-color: #607d8b;">DK</div>
+                                    <div class="message-content">
+                                        <div class="message-author">
+                                            David Kim
+                                        </div>
+                                        <div class="message-text">
+                                            I've been using neem oil spray for aphids on my vegetables and it works well. Mix 2 tsp neem oil with 1 tsp mild soap and 1 quart water, then spray weekly.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="chat-message new-message" data-message-topic="pest-control" style="display: none;">
+                                    <div class="message-avatar" style="background-color: #e91e63;">AJ</div>
+                                    <div class="message-content">
+                                        <div class="message-author">
+                                            Alex Johnson
+                                        </div>
+                                        <div class="message-text">
+                                            Has anyone tried using diatomaceous earth for pest control? I'm considering it for my potato plants to control beetles.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-input">
+                                <form id="community-chat-form">
+                                    <input type="text" id="chat-message-input" placeholder="Type your message (sign in to participate)..." disabled>
+                                    <button type="button" class="login-link" id="chat-send-btn">Sign In</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
     <script src="dashboard.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="auth.js"></script>
     
-    <!-- Theme Toggle JavaScript -->
+    <!-- Theme Toggle and additional Weather JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const themeToggle = document.getElementById('theme-toggle');
@@ -87,6 +333,11 @@
                         window.map.invalidateSize();
                     }, 100);
                 }
+                
+                // Update chart colors if chart exists
+                if (window.temperatureChart) {
+                    updateChartColors(window.temperatureChart);
+                }
             });
             
             // Update icon based on theme
@@ -108,6 +359,91 @@
                     // Reload the page to reset the map view
                     window.location.reload();
                 });
+            }
+            
+            // Update chart colors based on theme
+            function updateChartColors(chart) {
+                const theme = document.documentElement.getAttribute('data-theme');
+                const textColor = theme === 'dark' ? '#e6e6e6' : '#333';
+                const gridColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                
+                chart.options.scales.x.ticks.color = textColor;
+                chart.options.scales.y.ticks.color = textColor;
+                chart.options.scales.x.grid.color = gridColor;
+                chart.options.scales.y.grid.color = gridColor;
+                chart.options.plugins.legend.labels.color = textColor;
+                chart.update();
+            }
+            
+            // Generate crop recommendations based on weather
+            window.generateCropRecommendations = function(weatherData) {
+                const temp = weatherData.main.temp;
+                const humidity = weatherData.main.humidity;
+                const windSpeed = weatherData.wind.speed;
+                const weatherCondition = weatherData.weather[0].main.toLowerCase();
+                
+                const recommendationsContainer = document.querySelector('#crop-recommendations .info-grid');
+                recommendationsContainer.innerHTML = '';
+                
+                // Show the recommendations section
+                document.getElementById('crop-recommendations').style.display = 'block';
+                
+                // Temperature-based recommendations
+                let tempRecommendations = [];
+                if (temp < 10) {
+                    tempRecommendations = ['Spinach', 'Kale', 'Cabbage', 'Brussels Sprouts'];
+                } else if (temp >= 10 && temp < 20) {
+                    tempRecommendations = ['Lettuce', 'Peas', 'Potatoes', 'Broccoli'];
+                } else if (temp >= 20 && temp < 30) {
+                    tempRecommendations = ['Tomatoes', 'Peppers', 'Cucumbers', 'Corn'];
+                } else {
+                    tempRecommendations = ['Watermelon', 'Okra', 'Sweet Potatoes', 'Eggplant'];
+                }
+                
+                // Create the recommendation card
+                const card = document.createElement('div');
+                card.className = 'info-card';
+                card.innerHTML = `
+                    <h3><i class="fas fa-leaf accent-green"></i> Recommended Crops</h3>
+                    <p>Based on current weather conditions at this location:</p>
+                    <ul>
+                        ${tempRecommendations.map(crop => `<li>${crop}</li>`).join('')}
+                    </ul>
+                    <p class="weather-note"><strong>Note:</strong> Current conditions - ${Math.round(temp)}°C, ${humidity}% humidity, ${weatherCondition}</p>
+                `;
+                
+                recommendationsContainer.appendChild(card);
+                
+                // Advice based on current weather
+                const adviceCard = document.createElement('div');
+                adviceCard.className = 'info-card';
+                adviceCard.innerHTML = `<h3><i class="fas fa-lightbulb accent-yellow"></i> Weather Advisory</h3>`;
+                
+                let advice = '<ul>';
+                
+                // Temperature advice
+                if (temp < 5) {
+                    advice += '<li>Protect crops from frost damage with covers or greenhouses.</li>';
+                } else if (temp > 30) {
+                    advice += '<li>Increase watering frequency and consider shade cloth for sensitive crops.</li>';
+                }
+                
+                // Rain/humidity advice
+                if (weatherCondition.includes('rain') || humidity > 80) {
+                    advice += '<li>Monitor for fungal diseases. Ensure good drainage and air circulation.</li>';
+                } else if (humidity < 30) {
+                    advice += '<li>Low humidity may increase water requirements. Monitor soil moisture closely.</li>';
+                }
+                
+                // Wind advice
+                if (windSpeed > 8) {
+                    advice += '<li>Strong winds may damage crops. Consider windbreaks or supports for tall plants.</li>';
+                }
+                
+                advice += '</ul>';
+                adviceCard.innerHTML += advice;
+                
+                recommendationsContainer.appendChild(adviceCard);
             }
         });
     </script>

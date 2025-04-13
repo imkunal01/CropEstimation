@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pest & Disease Tracker | Crop Monitoring System</title>
+    <link rel="stylesheet" href="../styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="pest_tracker.css">
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-seedling"></i> Crop Monitoring System</h1>
+            <nav>
+                <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="../dashboard.html"><i class="fas fa-cloud-sun-rain"></i> Weather Dashboard</a>
+                <a href="../main.html"><i class="fas fa-calculator"></i> Crop Estimation</a>
+                <a href="index.html" class="active"><i class="fas fa-bug"></i> Pest Tracker</a>
+                <a href="../crop_planner/index.html"><i class="fas fa-sync-alt"></i> Crop Rotation</a>
+                <a href="../profile.html"><i class="fas fa-user-circle"></i> Profile</a>
+            </nav>
+            <div class="user-profile-icon">
+                <a href="../profile.html" title="View Profile">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                        <img id="header-profile-img" src="" alt="Profile" style="display: none;">
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="tracker-content">
+            <section class="tracker-intro">
+                <h2>Track Pests & Diseases</h2>
+                <p>Record pest and disease sightings on your farm to identify patterns, predict outbreaks, and implement targeted control measures.</p>
+            </section>
+            
+            <div class="tracker-container">
+                <section class="report-form-section">
+                    <h3><i class="fas fa-clipboard-list"></i> Report a Sighting</h3>
+                    <form id="report-form" class="tracker-form">
+                        <div class="form-group">
+                            <label for="pest-name" class="form-label">Pest/Disease Name</label>
+                            <input type="text" id="pest-name" class="form-control" placeholder="E.g., Aphids, Powdery Mildew" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category" class="form-label">Category</label>
+                                <select id="category" class="form-control" required>
+                                    <option value="">Select category</option>
+                                    <option value="insect">Insect</option>
+                                    <option value="disease">Disease</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="date-observed" class="form-label">Date Observed</label>
+                                <input type="date" id="date-observed" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea id="description" class="form-control" rows="3" placeholder="Describe what you observed..." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="affected-crops" class="form-label">Affected Crops/Plants</label>
+                            <input type="text" id="affected-crops" class="form-control" placeholder="E.g., Tomatoes, Corn, Roses">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="severity" class="form-label">Severity Level</label>
+                            <select id="severity" class="form-control" required>
+                                <option value="low">Low (Minor damage, contained)</option>
+                                <option value="medium">Medium (Moderate spread, noticeable damage)</option>
+                                <option value="high">High (Severe damage, widespread)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="location-wrapper">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" id="location" class="form-control" placeholder="Enter location or use map" required>
+                            <button type="button" id="use-map-btn" title="Use Map"><i class="fas fa-map-marker-alt"></i></button>
+                            
+                            <div class="location-inputs" style="display: none;">
+                                <input type="hidden" id="latitude" name="latitude">
+                                <input type="hidden" id="longitude" name="longitude">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="images" class="form-label">Images (Optional)</label>
+                            <input type="file" id="images" class="form-control" accept="image/*" multiple>
+                            <div class="image-upload-container">
+                                <div id="image-preview" class="image-preview"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="treatment" class="form-label">Treatment Applied (Optional)</label>
+                            <textarea id="treatment" class="form-control" rows="2" placeholder="Any treatments you've already tried"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn primary-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Report
+                        </button>
+                        
+                        <button type="button" id="ai-solution-btn" class="ai-solution-btn">
+                            <i class="fas fa-robot"></i> Get AI Solution
+                        </button>
+                    </form>
+                    
+                    <div id="ai-solution-container" class="ai-solution-results" style="display:none;">
+                        <div class="ai-solution-title">
+                            <i class="fas fa-robot"></i> AI Recommended Solution
+                        </div>
+                        <div id="ai-solution-content"></div>
+                    </div>
+                </section>
+                
+                <section class="tracker-data">
+                    <div class="data-tabs">
+                        <button class="tab-btn active" data-tab="reports">Recent Reports</button>
+                        <button class="tab-btn" data-tab="trends">Trends & Analytics</button>
+                        <button class="tab-btn" data-tab="map">Distribution Map</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="reports-tab">
+                        <div class="filter-controls">
+                            <div class="search-filter">
+                                <input type="text" id="search-reports" placeholder="Search reports...">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="filter-dropdown">
+                                <select id="filter-category">
+                                    <option value="all">All Categories</option>
+                                    <option value="insect">Insects</option>
+                                    <option value="disease">Diseases</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="reports-container" id="reports-container">
+                            <div class="no-data-message">
+                                <i class="fas fa-leaf" style="font-size: 32px; margin-bottom: 10px;"></i>
+                                <p>No reports yet. Be the first to report a pest or disease!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="trends-tab">
+                        <div class="chart-container">
+                            <canvas id="trends-chart"></canvas>
+                        </div>
+                        <div class="trend-insights">
+                            <h4>Insights & Predictions</h4>
+                            <div id="insights-container" class="insights-container">
+                                <div class="no-data-message">
+                                    <p>Not enough data to generate insights yet. Add more reports to see trends and analysis.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="map-tab">
+                        <div id="sightings-map"></div>
+                        <div class="map-legend">
+                            <h4>Legend</h4>
+                            <div class="legend-item">
+                                <span class="legend-dot insect-dot"></span>
+                                <span>Insect Pests</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot disease-dot"></span>
+                                <span>Diseases</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot other-dot"></span>
+                                <span>Other</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <section class="pest-knowledge-base">
+                <h3><i class="fas fa-book-open"></i> Pest Knowledge Base</h3>
+                <div class="knowledge-cards">
+                    <div class="knowledge-card">
+                        <div class="card-header">
+                            <img src="https://cdn-icons-png.flaticon.com/128/2186/2186726.png" alt="Aphids">
+                            <h4>Aphids</h4>
+                        </div>
+                        <div class="card-content">
+                            <p>Small sap-sucking insects that can quickly colonize plants and spread disease.</p>
+                            <div class="card-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Common Crops:</span>
+                                    <span>Vegetables, fruits, ornamentals</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Treatment:</span>
+                                    <span>Insecticidal soap, neem oil, beneficial insects</span>
+                                </div>
+                            </div>
+                            <a href="#" class="learn-more-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="knowledge-card">
+                        <div class="card-header">
+                            <img src="https://cdn-icons-png.flaticon.com/128/2186/2186741.png" alt="Blight">
+                            <h4>Late Blight</h4>
+                        </div>
+                        <div class="card-content">
+                            <p>Fungal disease that causes dark lesions on leaves and stems, potentially destroying entire crops.</p>
+                            <div class="card-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Common Crops:</span>
+                                    <span>Potatoes, tomatoes</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Treatment:</span>
+                                    <span>Fungicides, crop rotation, resistant varieties</span>
+                                </div>
+                            </div>
+                            <a href="#" class="learn-more-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="knowledge-card">
+                        <div class="card-header">
+                            <img src="https://cdn-icons-png.flaticon.com/128/2186/2186719.png" alt="Beetles">
+                            <h4>Colorado Potato Beetle</h4>
+                        </div>
+                        <div class="card-content">
+                            <p>Striped beetle that defoliates potato plants and related crops at all life stages.</p>
+                            <div class="card-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Common Crops:</span>
+                                    <span>Potatoes, tomatoes, eggplants</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Treatment:</span>
+                                    <span>Crop rotation, organic insecticides, hand-picking</span>
+                                </div>
+                            </div>
+                            <a href="#" class="learn-more-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="knowledge-card">
+                        <div class="card-header">
+                            <img src="https://cdn-icons-png.flaticon.com/128/2186/2186708.png" alt="Mildew">
+                            <h4>Powdery Mildew</h4>
+                        </div>
+                        <div class="card-content">
+                            <p>White powdery fungal growth on leaf surfaces that reduces photosynthesis and yields.</p>
+                            <div class="card-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Common Crops:</span>
+                                    <span>Cucurbits, grapes, berries</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Treatment:</span>
+                                    <span>Sulfur sprays, potassium bicarbonate, improved air circulation</span>
+                                </div>
+                            </div>
+                            <a href="#" class="learn-more-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="knowledge-base-actions">
+                    <a href="#" class="btn secondary-btn">View Full Library</a>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Map Selection Modal -->
+    <div class="modal" id="map-modal">
+        <div class="modal-content map-modal-content">
+            <div class="modal-header">
+                <h3>Select Location on Map</h3>
+                <button id="close-map-modal" class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="location-map"></div>
+                <p class="map-instructions">Click on the map to select a location or search below.</p>
+                <div class="map-search">
+                    <input type="text" id="map-search-input" placeholder="Search location...">
+                    <button id="map-search-btn" class="btn primary-btn btn-sm">Search</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-location" class="btn primary-btn">Confirm Location</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="pest_tracker.js"></script>
+    
+    <!-- Theme Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check for saved theme preference or use device preference
+            const savedTheme = localStorage.getItem('theme') || 
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            
+            // Apply saved theme
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateIcon(savedTheme);
+            
+            // Toggle theme
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+            });
+            
+            // Update icon based on theme
+            function updateIcon(theme) {
+                if (theme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            }
+        });
+    </script>
+    
+    <!-- Floating AI Chatbot -->
+    <div class="ai-chatbot-floating" id="ai-chatbot-floating">
+        <div class="chatbot-wrapper" id="chatbot-wrapper">
+            <div class="chatbot-header">
+                <h3><i class="fas fa-robot"></i> AI Farming Assistant</h3>
+                <button class="chatbot-close" id="chatbot-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chatbot-messages" id="floating-chat-messages">
+                <div class="bot-message">
+                    Hello! I'm your AI Farming Assistant. How can I help you today?
+                </div>
+                <div class="bot-message">
+                    You can ask me about crops, pest management, weather impacts, or any farming topic.
+                </div>
+            </div>
+            <div class="chatbot-quick-replies">
+                <button class="quick-reply" data-query="How to manage aphids?">How to manage aphids?</button>
+                <button class="quick-reply" data-query="Best crops for clay soil?">Best crops for clay soil?</button>
+                <button class="quick-reply" data-query="Organic fertilizers?">Organic fertilizers?</button>
+            </div>
+            <div class="chatbot-input-container">
+                <input type="text" id="floating-chat-input" placeholder="Ask something...">
+                <button id="floating-chat-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button class="chatbot-toggle" id="chatbot-toggle">
+            <i class="fas fa-robot"></i>
+        </button>
+    </div>
+    
+    <!-- Login Modal -->
+    <div class="login-modal" id="login-modal">
+        <div class="login-modal-content">
+            <button class="login-modal-close" id="login-modal-close"><i class="fas fa-times"></i></button>
+            <div class="auth-header">
+                <h2><i class="fas fa-user-circle"></i> Account Access</h2>
+            </div>
+            <div class="auth-form">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" data-tab="login">Login</div>
+                    <div class="auth-tab" data-tab="register">Register</div>
+                </div>
+                
+                <div class="social-login">
+                    <button class="google-btn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" width="18">
+                        Continue with Google
+                    </button>
+                </div>
+                
+                <div class="separator">or</div>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" class="form-control" required>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                    <div class="form-group">
+                        <button type="submit" class="btn primary-btn w-100">Login</button>
+                    </div>
+                </form>
+                
+                <form id="register-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">Confirm Password</label>
+                        <input type="password" id="register-confirm" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn primary-btn w-100">Create Account</button>
+                    </div>
+                </form>
+                
+                <div class="auth-footnote">
+                    By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../chatbot.js"></script>
+    <script src="../auth.js"></script>
+</body>
+</html> 

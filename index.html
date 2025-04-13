@@ -11,65 +11,416 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Theme Toggle Button -->
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
         <i class="fas fa-moon"></i>
     </button>
     
+    <!-- Onboarding Overlay -->
+    <div class="onboarding-overlay" id="onboarding-overlay">
+        <div class="onboarding-container">
+            <div class="onboarding-header">
+                <h2><i class="fas fa-seedling"></i> Welcome to Crop Monitoring System</h2>
+                <button class="onboarding-close" id="skip-onboarding"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="onboarding-content">
+                <div class="onboarding-step" data-step="1">
+                    <div class="onboarding-image">
+                        <i class="fas fa-laptop-code fa-4x"></i>
+                    </div>
+                    <h3>Smart Crop Monitoring</h3>
+                    <p>Track your crop yields, monitor real-time weather, and get AI-powered recommendations to optimize your farming operations.</p>
+                </div>
+                <div class="onboarding-step" data-step="2" style="display: none;">
+                    <div class="onboarding-image">
+                        <i class="fas fa-chart-line fa-4x"></i>
+                    </div>
+                    <h3>Yield Prediction</h3>
+                    <p>Get accurate yield predictions based on real-time data, historical patterns, and advanced AI algorithms.</p>
+                </div>
+                <div class="onboarding-step" data-step="3" style="display: none;">
+                    <div class="onboarding-image">
+                        <i class="fas fa-users fa-4x"></i>
+                    </div>
+                    <h3>Farming Community</h3>
+                    <p>Connect with other farmers, share knowledge, and learn from expert advisors in our community platform.</p>
+                </div>
+                <div class="onboarding-step" data-step="4" style="display: none;">
+                    <div class="onboarding-image">
+                        <i class="fas fa-robot fa-4x"></i>
+                    </div>
+                    <h3>AI Farming Assistant</h3>
+                    <p>Ask questions and get instant answers from our agriculture-focused AI chatbot to help solve your farming challenges.</p>
+                </div>
+                <div class="onboarding-navigation">
+                    <button class="btn secondary-btn" id="prev-step" disabled>Back</button>
+                    <div class="step-indicators">
+                        <span class="step-dot active" data-step="1"></span>
+                        <span class="step-dot" data-step="2"></span>
+                        <span class="step-dot" data-step="3"></span>
+                    </div>
+                    <button class="btn primary-btn" id="next-step">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
         <header>
-            <h1>Crop Monitoring System</h1>
+            <h1><i class="fas fa-seedling"></i> Crop Monitoring System</h1>
+            <nav>
+                <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html"><i class="fas fa-map-marker-alt"></i> Weather Dashboard</a>
+                <a href="main.html"><i class="fas fa-calculator"></i> Crop Estimation</a>
+                <a href="crop_planner/index.html"><i class="fas fa-sync-alt"></i> Crop Rotation</a>
+                <a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a>
+            </nav>
+            <div class="header-actions">
+                <div class="auth-buttons" id="auth-buttons">
+                    <a href="login.html" class="btn secondary-btn btn-sm login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="login.html" class="btn primary-btn btn-sm signup-btn">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </div>
+                <div class="user-profile-icon">
+                    <a href="profile.html" title="View Profile">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                            <img id="nav-profile-img" src="" alt="Profile" style="display: none;">
+                        </div>
+                    </a>
+                </div>
+            </div>
         </header>
+        
         <main class="landing-page">
-            <div class="welcome-text">
-                <h2>Monitor Your Crops and Weather Conditions</h2>
-                <p>Track real-time weather data for your farm locations and make informed decisions for your crops.</p>
-            </div>
-            <div class="cta-buttons">
-                <a href="dashboard.html" class="btn primary-btn">
-                    <i class="fas fa-map-marker-alt"></i> Check Crop Progression
-                </a>
-                <a href="main.html" class="btn secondary-btn">
-                    <i class="fas fa-calculator"></i> Crop Estimation
-                </a>
-            </div>
+            <section class="hero-section">
+                <div class="hero-content">
+                    <div class="welcome-text animate-on-scroll">
+                        <h2>Monitor Your Crops and Weather Conditions</h2>
+                        <p>Track real-time weather data for your farm locations and make informed decisions for your crops.</p>
+                    </div>
+                    <div class="hero-background">
+                        <div class="bg-circle circle-1"></div>
+                        <div class="bg-circle circle-2"></div>
+                        <div class="bg-circle circle-3"></div>
+                    </div>
+                    <div class="cta-buttons animate-on-scroll" data-delay="200">
+                        <a href="dashboard.html" class="btn primary-btn">
+                            <i class="fas fa-map-marker-alt"></i> Check Weather Dashboard
+                        </a>
+                        <a href="main.html" class="btn secondary-btn">
+                            <i class="fas fa-calculator"></i> Crop Estimation
+                        </a>
+                        <a href="crop_planner/index.html" class="btn accent-btn">
+                            <i class="fas fa-sync-alt"></i> Plan Crop Rotation
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Info Cards -->
+                <div class="quick-info-cards animate-on-scroll" data-delay="300">
+                    <div class="quick-card">
+                        <i class="fas fa-map-marked-alt accent-blue"></i>
+                        <h3>Location-Based</h3>
+                        <p>Get weather data specific to your farm's exact location</p>
+                    </div>
+                    <div class="quick-card">
+                        <i class="fas fa-sync accent-green"></i>
+                        <h3>Real-Time Updates</h3>
+                        <p>Weather information updated in real-time</p>
+                    </div>
+                    <div class="quick-card">
+                        <i class="fas fa-chart-bar accent-purple"></i>
+                        <h3>Data Analysis</h3>
+                        <p>Visualize trends and patterns in weather data</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section class="stats-section">
+                <div class="section-divider"></div>
+                <div class="content-wrapper">
+                    <h2><i class="fas fa-chart-line accent-blue"></i> Global Farming Statistics</h2>
+                    <div class="stats-container">
+                        <div class="stat-card animate-on-scroll">
+                            <div class="stat-counter" data-target="570">0</div>
+                            <div class="stat-label">Million Farms Worldwide</div>
+                        </div>
+                        <div class="stat-card animate-on-scroll">
+                            <div class="stat-counter" data-target="11">0</div>
+                            <div class="stat-label">% of World's Land Used for Crops</div>
+                        </div>
+                        <div class="stat-card animate-on-scroll">
+                            <div class="stat-counter" data-target="70">0</div>
+                            <div class="stat-label">% of Fresh Water Used in Agriculture</div>
+                        </div>
+                        <div class="stat-card animate-on-scroll">
+                            <div class="stat-counter" data-target="40">0</div>
+                            <div class="stat-label">% of Global Workforce in Agriculture</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Crop Information Section -->
+            <section class="crop-info-section">
+                <div class="section-divider"></div>
+                <div class="content-wrapper">
+                    <h2><i class="fas fa-leaf accent-green"></i> Crop Information</h2>
+                    <div class="info-grid">
+                        <div class="info-card animate-on-scroll">
+                            <h3><img src="https://cdn-icons-png.flaticon.com/128/3823/3823395.png" class="crop-icon"> Wheat</h3>
+                            <ul>
+                                <li><strong>Growing Season:</strong> 120-150 days</li>
+                                <li><strong>Optimal Temperature:</strong> 21-24°C (70-75°F)</li>
+                                <li><strong>Water Requirement:</strong> 450-650mm per season</li>
+                                <li><strong>Climate:</strong> Temperate, cold semi-arid regions</li>
+                            </ul>
+                        </div>
+                        <div class="info-card animate-on-scroll" data-delay="100">
+                            <h3><img src="https://cdn-icons-png.flaticon.com/128/3823/3823367.png" class="crop-icon"> Rice</h3>
+                            <ul>
+                                <li><strong>Growing Season:</strong> 90-120 days</li>
+                                <li><strong>Optimal Temperature:</strong> 24-30°C (75-86°F)</li>
+                                <li><strong>Water Requirement:</strong> 900-2500mm per season</li>
+                                <li><strong>Climate:</strong> Tropical and subtropical regions</li>
+                            </ul>
+                        </div>
+                        <div class="info-card animate-on-scroll" data-delay="200">
+                            <h3><img src="https://cdn-icons-png.flaticon.com/128/3823/3823364.png" class="crop-icon"> Maize/Corn</h3>
+                            <ul>
+                                <li><strong>Growing Season:</strong> 90-120 days</li>
+                                <li><strong>Optimal Temperature:</strong> 24-30°C (75-86°F)</li>
+                                <li><strong>Water Requirement:</strong> 500-800mm per season</li>
+                                <li><strong>Climate:</strong> Tropical, subtropical, temperate</li>
+                            </ul>
+                        </div>
+                        <div class="info-card animate-on-scroll" data-delay="300">
+                            <h3><img src="https://cdn-icons-png.flaticon.com/128/3823/3823363.png" class="crop-icon"> Potatoes</h3>
+                            <ul>
+                                <li><strong>Growing Season:</strong> 70-120 days</li>
+                                <li><strong>Optimal Temperature:</strong> 18-20°C (64-68°F)</li>
+                                <li><strong>Water Requirement:</strong> 500-700mm per season</li>
+                                <li><strong>Climate:</strong> Cool temperate regions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Weather Impact Section -->
+            <section class="weather-impact-section">
+                <div class="section-divider"></div>
+                <div class="content-wrapper">
+                    <h2><i class="fas fa-cloud-sun-rain accent-orange"></i> Weather Impact on Crops</h2>
+                    
+                    <div class="tabs-container">
+                        <div class="tabs">
+                            <button class="tab active" data-tab="temperature">Temperature</button>
+                            <button class="tab" data-tab="rainfall">Rainfall</button>
+                            <button class="tab" data-tab="humidity">Humidity</button>
+                            <button class="tab" data-tab="wind">Wind</button>
+                        </div>
+                        
+                        <div id="temperature" class="tab-content active">
+                            <div class="info-grid">
+                                <div class="info-card">
+                                    <h3 class="accent-red">High Temperature</h3>
+                                    <ul>
+                                        <li>Can cause heat stress in plants</li>
+                                        <li>Increases water requirements</li>
+                                        <li>May lead to decreased pollination</li>
+                                        <li>Can accelerate crop development</li>
+                                    </ul>
+                                </div>
+                                <div class="info-card">
+                                    <h3 class="accent-blue">Low Temperature</h3>
+                                    <ul>
+                                        <li>May cause frost damage</li>
+                                        <li>Slows plant growth and development</li>
+                                        <li>Can reduce nutrient uptake</li>
+                                        <li>May induce dormancy in certain crops</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="rainfall" class="tab-content">
+                            <div class="info-grid">
+                                <div class="info-card">
+                                    <h3 class="accent-blue">High Rainfall</h3>
+                                    <ul>
+                                        <li>May cause flooding and soil saturation</li>
+                                        <li>Can increase disease pressure</li>
+                                        <li>May leach nutrients from soil</li>
+                                        <li>Can delay field operations</li>
+                                    </ul>
+                                </div>
+                                <div class="info-card">
+                                    <h3 class="accent-orange">Low Rainfall</h3>
+                                    <ul>
+                                        <li>Reduces water availability for crops</li>
+                                        <li>May cause drought stress</li>
+                                        <li>Can reduce yield potential</li>
+                                        <li>May require irrigation interventions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="humidity" class="tab-content">
+                            <div class="info-grid">
+                                <div class="info-card">
+                                    <h3 class="accent-blue">High Humidity</h3>
+                                    <ul>
+                                        <li>Increases disease pressure</li>
+                                        <li>Can reduce transpiration rates</li>
+                                        <li>May affect pollination in some crops</li>
+                                        <li>Can lead to increased fungal infections</li>
+                                    </ul>
+                                </div>
+                                <div class="info-card">
+                                    <h3 class="accent-orange">Low Humidity</h3>
+                                    <ul>
+                                        <li>Increases transpiration rates</li>
+                                        <li>May cause moisture stress</li>
+                                        <li>Can increase water requirements</li>
+                                        <li>May affect fruit set in some crops</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="wind" class="tab-content">
+                            <div class="info-grid">
+                                <div class="info-card">
+                                    <h3 class="accent-red">Strong Wind</h3>
+                                    <ul>
+                                        <li>Can cause lodging in grain crops</li>
+                                        <li>May damage plant structures</li>
+                                        <li>Increases transpiration rates</li>
+                                        <li>Can affect pollination</li>
+                                    </ul>
+                                </div>
+                                <div class="info-card">
+                                    <h3 class="accent-green">Moderate Wind</h3>
+                                    <ul>
+                                        <li>Aids in pollination for some crops</li>
+                                        <li>Can help dry foliage after rain</li>
+                                        <li>Reduces disease pressure</li>
+                                        <li>Helps with CO2 exchange</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Research & Resources Section -->
+            <section class="research-section">
+                <div class="section-divider"></div>
+                <div class="content-wrapper">
+                    <h2><i class="fas fa-book accent-orange"></i> Research & Resources</h2>
+                    <div class="tabs-container">
+                        <div class="tabs animate-on-scroll">
+                            <div class="tab active" data-tab="organizations">Organizations</div>
+                            <div class="tab" data-tab="research">Research Papers</div>
+                            <div class="tab" data-tab="tools">Farming Tools</div>
+                        </div>
+                        <div class="tab-content active animate-on-scroll" id="organizations">
+                            <div class="info-card">
+                                <h3><i class="fas fa-building accent-blue"></i> Agricultural Organizations</h3>
+                                <ul>
+                                    <li><a href="https://www.fao.org/" target="_blank">Food and Agriculture Organization (FAO)</a> - UN agency leading international efforts to defeat hunger</li>
+                                    <li><a href="https://www.cgiar.org/" target="_blank">CGIAR</a> - Global research partnership for a food-secure future</li>
+                                    <li><a href="https://www.ipcc.ch/" target="_blank">IPCC</a> - Intergovernmental Panel on Climate Change</li>
+                                    <li><a href="https://www.usda.gov/" target="_blank">USDA</a> - United States Department of Agriculture</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-content animate-on-scroll" id="research">
+                            <div class="info-card">
+                                <h3><i class="fas fa-microscope accent-purple"></i> Recent Research Papers</h3>
+                                <ul>
+                                    <li>"Climate Change Impacts on Global Food Security" - Science Journal</li>
+                                    <li>"Sustainable Intensification in Agriculture" - Nature</li>
+                                    <li>"Precision Agriculture Technologies for Smallholder Farmers" - Agricultural Systems</li>
+                                    <li>"The Future of Food: Environmental Lessons from E-Commerce" - Sustainability</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-content animate-on-scroll" id="tools">
+                            <div class="info-card">
+                                <h3><i class="fas fa-tools accent-orange"></i> Modern Farming Tools</h3>
+                                <ul>
+                                    <li><strong>Satellite Imagery</strong> - Remote sensing for crop monitoring and field mapping</li>
+                                    <li><strong>IoT Sensors</strong> - Real-time monitoring of soil moisture, temperature, and nutrients</li>
+                                    <li><strong>Drones</strong> - Aerial imagery for crop scouting and analysis</li>
+                                    <li><strong>Machine Learning</strong> - Predictive analytics for yield forecasting and pest detection</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <footer class="animate-on-scroll" data-delay="100">
+                <div class="section-divider"></div>
+                <p>&copy; 2025 Crop Monitoring System | Lovely Professional University TM</p>
+            </footer>
         </main>
     </div>
 
-    <!-- Theme Toggle JavaScript -->
+    <!-- Floating AI Chatbot -->
+    <div class="chatbot-container">
+        <button id="chatbot-toggle" class="chatbot-toggle">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+        <div id="chatbot-wrapper" class="chatbot-wrapper">
+            <div class="chatbot-header">
+                <h3>Farming Assistant</h3>
+                <button id="chatbot-close" class="chatbot-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chatbot-messages" class="chatbot-messages">
+                <div class="bot-message">
+                    Hello! I'm your farming assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="quick-replies">
+                <span class="quick-reply" data-query="How to manage pests?">Pest Management</span>
+                <span class="quick-reply" data-query="Best crops for clay soil?">Clay Soil Crops</span>
+                <span class="quick-reply" data-query="How to control aphids organically?">Organic Aphid Control</span>
+                <span class="quick-reply" data-query="Best irrigation methods?">Irrigation</span>
+            </div>
+            <div class="chatbot-input-container">
+                <input type="text" id="chatbot-input" placeholder="Type your question...">
+                <button id="chatbot-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+    <script src="weather.js"></script>
+    <script src="crops.js"></script>
+    <script src="crop_estimation.js"></script>
+    <script src="location.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="index.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeToggle = document.getElementById('theme-toggle');
-            const themeIcon = themeToggle.querySelector('i');
-            
-            // Check for saved theme preference or use device preference
-            const savedTheme = localStorage.getItem('theme') || 
-                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            
-            // Apply saved theme
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateIcon(savedTheme);
-            
-            // Toggle theme
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateIcon(newTheme);
-            });
-            
-            // Update icon based on theme
-            function updateIcon(theme) {
-                if (theme === 'dark') {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                } else {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                }
-            }
+        // Initialize dashboard charts and maps
+        document.addEventListener('DOMContentLoaded', function() {
+            // Additional initialization code...
         });
     </script>
 </body>

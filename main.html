@@ -35,11 +35,23 @@
     
     <div class="container">
         <header>
-            <h1><i class="fas fa-leaf"></i> Crop Estimation</h1>
+            <h1><i class="fas fa-seedling"></i> Crop Monitoring System</h1>
             <nav>
                 <a href="index.html"><i class="fas fa-home"></i> Home</a>
                 <a href="dashboard.html"><i class="fas fa-cloud-sun-rain"></i> Weather Dashboard</a>
+                <a href="main.html" class="active"><i class="fas fa-calculator"></i> Crop Estimation</a>
+                <a href="pest_tracker/index.html"><i class="fas fa-bug"></i> Pest Tracker</a>
+                <a href="crop_planner/index.html"><i class="fas fa-sync-alt"></i> Crop Rotation</a>
+                <a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a>
             </nav>
+            <div class="user-profile-icon">
+                <a href="profile.html" title="View Profile">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                        <img id="header-profile-img" src="" alt="Profile" style="display: none;">
+                    </div>
+                </a>
+            </div>
         </header>
 
         <main>
@@ -112,5 +124,105 @@
             }
         });
     </script>
+
+    <!-- Floating AI Chatbot -->
+    <div class="ai-chatbot-floating" id="ai-chatbot-floating">
+        <div class="chatbot-wrapper" id="chatbot-wrapper">
+            <div class="chatbot-header">
+                <h3><i class="fas fa-robot"></i> AI Farming Assistant</h3>
+                <button class="chatbot-close" id="chatbot-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chatbot-messages" id="floating-chat-messages">
+                <div class="bot-message">
+                    Hello! I'm your AI Farming Assistant. How can I help you today?
+                </div>
+                <div class="bot-message">
+                    You can ask me about crops, pest management, weather impacts, or any farming topic.
+                </div>
+            </div>
+            <div class="chatbot-quick-replies">
+                <button class="quick-reply" data-query="How to manage aphids?">How to manage aphids?</button>
+                <button class="quick-reply" data-query="Best crops for clay soil?">Best crops for clay soil?</button>
+                <button class="quick-reply" data-query="Organic fertilizers?">Organic fertilizers?</button>
+            </div>
+            <div class="chatbot-input-container">
+                <input type="text" id="floating-chat-input" placeholder="Ask something...">
+                <button id="floating-chat-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button class="chatbot-toggle" id="chatbot-toggle">
+            <i class="fas fa-robot"></i>
+        </button>
+    </div>
+    
+    <!-- Login Modal -->
+    <div class="login-modal" id="login-modal">
+        <div class="login-modal-content">
+            <button class="login-modal-close" id="login-modal-close"><i class="fas fa-times"></i></button>
+            <div class="auth-header">
+                <h2><i class="fas fa-user-circle"></i> Account Access</h2>
+            </div>
+            <div class="auth-form">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" data-tab="login">Login</div>
+                    <div class="auth-tab" data-tab="register">Register</div>
+                </div>
+                
+                <div class="social-login">
+                    <button class="google-btn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" width="18">
+                        Continue with Google
+                    </button>
+                </div>
+                
+                <div class="separator">or</div>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" class="form-control" required>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                    <div class="form-group">
+                        <button type="submit" class="btn primary-btn w-100">Login</button>
+                    </div>
+                </form>
+                
+                <form id="register-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">Confirm Password</label>
+                        <input type="password" id="register-confirm" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn primary-btn w-100">Create Account</button>
+                    </div>
+                </form>
+                
+                <div class="auth-footnote">
+                    By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="auth.js"></script>
 </body>
 </html>
